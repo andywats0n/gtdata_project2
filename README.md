@@ -7,8 +7,8 @@
 ### Source of data: OpenWeatherMap API (https://openweathermap.org/history#city)
 
 ### Link to repository: https://github.com/andywats0n/gtdata_project2
+
 #
-## Examples
 
 ### Precipitation
 ![Precipitation heatmap](src/assets/img/map1.png)
