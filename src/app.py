@@ -15,5 +15,9 @@ app = Flask(__name__)
 def home():
     return render_template('index.html', payload=payload)
 
+@app.route('/api/test', methods=['GET','POST'])
+def api_test():
+    return 'test'
+
 if __name__ == "__main__":
     app.run(debug=True)
