@@ -14,7 +14,7 @@
         CLIENT_ID = '<aeris_key>'
         CLIENT_SECRET = '<aeris_secret>'
 
-- Run `python app.py` and navigate to `localhost:5000/home` in your browser
+- Run `python app.py` and navigate to `localhost:5000` in your browser
 
 #
 
