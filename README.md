@@ -10,9 +10,9 @@
 
 - create `src/static/config.js` and add these variables
 
-        API_KEY = '<mapbox_key>'
-        CLIENT_ID = '<aeris_key>'
-        CLIENT_SECRET = '<aeris_secret>'
+        let API_KEY = '<mapbox_key>'
+        let CLIENT_ID = '<aeris_key>'
+        let CLIENT_SECRET = '<aeris_secret>'
 
 - Run `python app.py` and navigate to `localhost:5000` in your browser
 
