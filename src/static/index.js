@@ -1,7 +1,18 @@
 
-let mymap = L.map('mapid').setView([51.505, -0.09], 13);
+const center = [39.8283, -98.5795]
 
-L.tileLayer(`https://api.tiles.mapbox.com/v4/{id}/{z}/{x}/{y}.png?access_token=${API_KEY}`, {
-    maxZoom: 18,
+let mymap = L.map('mapid').setView(center, 5.15);
+
+let mapUrl = `https://api.tiles.mapbox.com/v4/{id}/{z}/{x}/{y}.png?access_token=${API_KEY}`
+
+L.tileLayer(mapUrl, {
     id: 'mapbox.streets',
 }).addTo(mymap);
+
+mymap.addEventListener('click', e => console.log(e))
+
+let url = `http://api.aerisapi.com/version?client_id=${CLIENT_ID}&client_secret=${CLIENT_SECRET}`
+
+// fetch(url)
+//   .then(res => res.json())
+//   .then(data => console.log(data))
