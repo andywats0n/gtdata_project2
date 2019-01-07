@@ -6,18 +6,24 @@
 # flask run --host=0.0.0.0
 # This tells your operating system to listen on all public IPs.
 
+import pymongo
 from flask import Flask, render_template
-from logic import payload
+from bson.json_util import dumps
+from config import USER, PASSWORD
+
+conn = f'mongodb+srv://{USER}:{PASSWORD}@weatherviz-andy-5dubo.mongodb.net/weatherviz?retryWrites=true'
+client = pymongo.MongoClient(conn)
+db = client.weatherviz
 
 app = Flask(__name__)
 
 @app.route('/', methods=['GET'])
 def home():
-    return render_template('index.html', payload=payload)
+    return render_template('index.html')
 
 @app.route('/api/test', methods=['GET','POST'])
 def api_test():
-    return 'test'
+    return dumps(db.raw.find())
 
 if __name__ == "__main__":
     app.run(debug=True)
