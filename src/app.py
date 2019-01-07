@@ -7,14 +7,13 @@
 # This tells your operating system to listen on all public IPs.
 
 import pymongo
-from flask import Flask, render_template
+from flask import Flask, render_template, jsonify
 from bson.json_util import dumps
 from config import USER, PASSWORD
 
 conn = f'mongodb+srv://{USER}:{PASSWORD}@weatherviz-andy-5dubo.mongodb.net/weatherviz?retryWrites=true'
 client = pymongo.MongoClient(conn)
 db = client.weatherviz
-
 app = Flask(__name__)
 
 @app.route('/', methods=['GET'])
