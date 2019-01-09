@@ -8,8 +8,6 @@ let url = 'http://localhost:5000/api/test'
 
 L.tileLayer(mapUrl, { id: 'mapbox.streets' }).addTo(mymap);
 
-let url = `http://api.aerisapi.com/version?client_id=${CLIENT_ID}&client_secret=${CLIENT_SECRET}`
-
 mymap.addEventListener('click', e => {console.log(e.latlng.lat, e.latlng.lng)})
 
 fetch(url)
