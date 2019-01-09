@@ -1,0 +1,3 @@
+const API_KEY = "pk.eyJ1IjoiYW5pa2FyYTEiLCJhIjoiY2pwdWZmeHZtMGc3aDQ4b2cyenA4amZuNCJ9.edPx3CZs2EAxeN0M74bWWw";
+const CLIENT_ID = "lxOoFeO416HkSlXFiuVTU";
+const CLIENT_SECRET = "PWsQxpgJ7G1tgN1wlO0122bPEbOwZiU1g7SCwUBe";
