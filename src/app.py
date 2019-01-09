@@ -22,7 +22,7 @@ def home():
 
 @app.route('/api/test', methods=['GET','POST'])
 def api_test():
-    return dumps(db.raw.find())
+    return dumps(db.max_temp.find())
 
 if __name__ == "__main__":
     app.run(debug=True)
