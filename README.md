@@ -1,4 +1,24 @@
-# Interactive Weather Map
+
+# WeatherViz - Interactive Weather Map
+
+## Local setup
+
+- create `src/config.py` and add these variables
+
+        USER = 'admin'
+        PASSWORD = 'password2'
+
+- create `src/static/config.js` and add these variables
+
+        let API_KEY = '<mapbox_key>'
+        let CLIENT_ID = '<aeris_key>'
+        let CLIENT_SECRET = '<aeris_secret>'
+
+- Run `python app.py` and navigate to `localhost:5000` in your browser
+
+#
+
+## Interactive Weather Map
 
 ## Topic: Allow a user to view the average temperature, accumulated rainfall, or accumulated snowfall for the United States over a user-defined period of time.
 
