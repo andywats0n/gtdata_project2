@@ -10,7 +10,7 @@ import pymongo
 from flask import Flask, render_template, jsonify
 from bson.json_util import dumps
 from config import USER, PASSWORD
-import Project3
+# import Project3
 
 conn = f'mongodb+srv://{USER}:{PASSWORD}@weatherviz-andy-5dubo.mongodb.net/weatherviz?retryWrites=true'
 client = pymongo.MongoClient(conn)
@@ -23,7 +23,7 @@ def home():
 
 @app.route('/api/test', methods=['GET','POST'])
 def api_test():
-    return dumps(db.max_temp.find())
+    return dumps(db.min_temp_davidtest.find())
 
 if __name__ == "__main__":
     app.run(debug=True)
