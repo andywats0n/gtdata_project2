@@ -1,2 +1,4 @@
 /src/config.py
 /src/static/config.js
+*.pyc
+*.pyo
