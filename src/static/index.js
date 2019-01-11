@@ -12,12 +12,12 @@ primeTile.addTo(mymap);
 
 mymap.addEventListener('click', e => {console.log(e.latlng.lat, e.latlng.lng)});
 
-var precipLayer = L.layerGroup(precipData);
-var snowLayer = L.layerGroup(snowData);
-var mintempLayer = L.layerGroup(mintempData);
-var maxtempLayer = L.layerGroup(maxtempData);
+let precipLayer = L.layerGroup(precipData);
+let snowLayer = L.layerGroup(snowData);
+let mintempLayer = L.layerGroup(mintempData);
+let maxtempLayer = L.layerGroup(maxtempData);
 
-var overlayMaps = {
+let overlayMaps = {
   Precipitation: precipLayer,
   Snow: snowLayer,
   MinTemperatures: mintempLayer,
