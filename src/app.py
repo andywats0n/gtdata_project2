@@ -12,19 +12,19 @@ app = Flask(__name__)
 def home():
     return render_template('index.html')
 
-@app.route('/api/maxt', methods=['GET','POST'])
+@app.route('/api/maxt', methods=['GET'])
 def fetch_maxt():
     return dumps(db.maxt.find())
 
-@app.route('/api/prcp', methods=['GET','POST'])
+@app.route('/api/prcp', methods=['GET'])
 def fetch_prcp():
     return dumps(db.prcp.find())
 
-@app.route('/api/animated', methods=['GET','POST'])
+@app.route('/api/animated', methods=['GET'])
 def load_animated_map():
     return render_template('animation_tiles.html')
 
-@app.route('/api/chloro', methods=['GET','POST'])
+@app.route('/api/chloro', methods=['GET'])
 def load_chloro():
     return render_template('chloro.html')
 
