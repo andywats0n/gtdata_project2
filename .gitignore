@@ -1,2 +1,6 @@
-/src/config.py
-/src/static/config.js
+.ipynb_checkpoints
+__pycache__/
+.DS_Store
+config.*
+*.pyc
+*.pyo
