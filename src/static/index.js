@@ -38,7 +38,7 @@ d3.json(precipUrl, function(response) {
 
   for (var i = 0; i < response.length; i++) {
     var record = response[i];
-    precipArray.push([record.Lat, record.Long, record['Prcp(in)']] * 100);
+    precipArray.push([record.Lat, record.Long, record['Prcp(in)']]);
   }
     var heat = L.heatLayer(precipArray, {
         radius: 30,
@@ -53,7 +53,7 @@ d3.json(snowUrl, function(response) {
 
   for (var i = 0; i < response.length; i++) {
     var record = response[i];
-    snowArray.push([record.Lat, record.Long, record['Snow(in)']] * 60);
+    snowArray.push([record.Lat, record.Long, record['Snow(in)']]);
   }
     var heat = L.heatLayer(snowArray, {
         radius: 30,
@@ -68,7 +68,7 @@ d3.json(mintempUrl, function(response) {
 
   for (var i = 0; i < response.length; i++) {
     var record = response[i];
-    mintempArray.push([record.Lat, record.Long, record['Temp(F)']] * 3);
+    mintempArray.push([record.Lat, record.Long, record['Temp(F)']]);
   }
     var heat = L.heatLayer(mintempArray, {
         radius: 20,
