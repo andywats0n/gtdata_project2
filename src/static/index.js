@@ -1,10 +1,10 @@
 let layer;
-let center = [39.8283, -98.5795]
+let center = [39.8283, -98.5795];
 let map = L.map('mapid').setView(center, 5.15);
-let mapUrl = `https://api.tiles.mapbox.com/v4/{id}/{z}/{x}/{y}.png?access_token=${API_KEY}`
+let mapUrl = `https://api.tiles.mapbox.com/v4/{id}/{z}/{x}/{y}.png?access_token=${API_KEY}`;
 L.tileLayer(mapUrl, { id: 'mapbox.streets' }).addTo(map);
 
-let filters = ['maxt','mint','prcp','snow']
+let filters = ['maxt','mint','prcp','snow'];
 let body = document.querySelector('body');
 let fSelect = document.createElement('select');
 let ySelect = document.createElement('select');
@@ -12,8 +12,8 @@ let mSelect = document.createElement('select');
 let submit = document.createElement('button');
 let clear = document.createElement('button');
 
-submit.innerHTML = 'Submit'
-clear.innerHTML = 'Clear'
+submit.innerHTML = 'Submit';
+clear.innerHTML = 'Clear';
 
 body.appendChild(clear);
 body.appendChild(submit);
@@ -65,8 +65,8 @@ function getData(f,m,y) {
   d3.json(url, function(response) {
     let data = [];
 
-    for (var i = 0; i < response.length; i++) {
-      var record = response[i];
+    for (let i = 0; i < response.length; i++) {
+      let record = response[i];
       data.push([record.Lat, record.Long, 20]);
     }
 
