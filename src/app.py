@@ -75,5 +75,10 @@ def snow():
     return snow_df.to_json(orient='records')
 
 
+@app.route('/api/stateData', methods=['GET'])
+def state_data():
+  data = db.stateData.find()
+  return dumps(data)
+
 if __name__ == "__main__":
     app.run(debug=False)
