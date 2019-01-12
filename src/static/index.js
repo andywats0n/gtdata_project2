@@ -38,11 +38,12 @@ d3.json(precipUrl, function(response) {
 
   for (var i = 0; i < response.length; i++) {
     var record = response[i];
-    precipArray.push([record.Lat, record.Long, record['Prcp(in)']]);
+    precipArray.push([record.Lat, record.Long, record['Prcp(in)']] * 100);
   }
     var heat = L.heatLayer(precipArray, {
-        radius: 50,
-        blur: 15
+        radius: 30,
+        blur: 15,
+        gradient: {0.3: 'blue', .5: 'lime', 1: 'red'}
       }).addTo(map);
     });
 
@@ -52,11 +53,12 @@ d3.json(snowUrl, function(response) {
 
   for (var i = 0; i < response.length; i++) {
     var record = response[i];
-    snowArray.push([record.Lat, record.Long, record['Snow(in)']]);
+    snowArray.push([record.Lat, record.Long, record['Snow(in)']] * 60);
   }
     var heat = L.heatLayer(snowArray, {
-        radius: 50,
-        blur: 15
+        radius: 30,
+        blur: 15,
+        gradient: {0.3: 'blue', .7: 'lime', 1: 'red'}
       }).addTo(map);
     });
 
@@ -66,11 +68,12 @@ d3.json(mintempUrl, function(response) {
 
   for (var i = 0; i < response.length; i++) {
     var record = response[i];
-    mintempArray.push([record.Lat, record.Long, record['Temp(F)']]);
+    mintempArray.push([record.Lat, record.Long, record['Temp(F)']] * 3);
   }
     var heat = L.heatLayer(mintempArray, {
-        radius: 50,
-        blur: 15
+        radius: 20,
+        blur: 20,
+        gradient: {0.4: 'blue', .8: 'lime', 1: 'red'}
       }).addTo(map);
     });
 
