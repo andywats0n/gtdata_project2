@@ -1,4 +1,5 @@
 let layer;
+let layers = [];
 let center = [39.8283, -98.5795];
 let map = L.map('mapid').setView(center, 5.15);
 let mapUrl = `https://api.tiles.mapbox.com/v4/{id}/{z}/{x}/{y}.png?access_token=${API_KEY}`;
@@ -58,27 +59,44 @@ fSelect.addEventListener('click', e => fSelected = e.target.value);
 mSelect.addEventListener('click', e => mSelected = e.target.value);
 ySelect.addEventListener('click', e => ySelected = e.target.value);
 submit.addEventListener('click', e => getData(fSelected,mSelected,ySelected));
-clear.addEventListener('click', e => map.removeLayer(layer));
+clear.addEventListener('click', e => {
+  layers.forEach(l => {
+    map.removeLayer(l);
+  });
+  // map.removeLayer(layer)
+
+});
 
 function getData(f,m,y) {
+
+
   let url = `http://localhost:5000/api/filter${f}/${parseInt(m)}/${parseInt(y)}`
   d3.json(url, function(response) {
     let data = [];
-
+    console.log(response);
     for (let i = 0; i < response.length; i++) {
       let record = response[i];
-      data.push([record.Lat, record.Long, 20]);
-    }
+      if (f === 'prcp') {
+        var name = record['Prcp(in)'];}
+      else if (f === 'snow') {
+        var name = record['Snow(in)'];}
+      else {
+        var name = record['Temp(F)'];}
+
+      data.push([record.Lat, record.Long, (name * 100)]);
+}
 
     layer = L.heatLayer(data, {
       radius: 30,
       blur: 15,
-      gradient: {0.3: 'blue', .7: 'lime', 1: 'red'}
+      gradient: {0.3: 'blue', .5: 'lime', 1: 'red'}
     }).addTo(map);
+    layers.push(layer)
   });
 }
 
 function init(filters) {
+  console.log('reading data...');
   filters.forEach(f => {
     fetch(`http://localhost:5000/api/${f}`)
       .then(res => res.json())

@@ -72,6 +72,7 @@ def snow():
 ## FILTERED MAXTEMP
 @app.route('/api/filtermaxt/<mon>/<yr>', methods=['GET','POST'])
 def maxtdate(mon, yr):
+    # maxt_df = maxt_df.rename(columns ={'Temp(F)':'Intensity'})
     new_df = maxt_df[(maxt_df['year']== (int(yr))) & (maxt_df['month']== (int(mon))) ]
     return new_df.to_json(orient='records')
 
@@ -79,6 +80,7 @@ def maxtdate(mon, yr):
 ## FILTERED MINTEMP
 @app.route('/api/filtermint/<mon>/<yr>', methods=['GET','POST'])
 def mintdate(mon, yr):
+    # mint_df = mint_df.rename(columns ={'Temp(F)':'Intensity'})
     new_df = mint_df[(mint_df['year']== (int(yr))) & (mint_df['month']== (int(mon))) ]
     return new_df.to_json(orient='records')
 
@@ -86,6 +88,7 @@ def mintdate(mon, yr):
 ## FILTERED PRECIPITATION
 @app.route('/api/filterprcp/<mon>/<yr>', methods=['GET','POST'])
 def prcpdate(mon, yr):
+    # prcp_df = prcp_df.rename(columns ={'Prcp(in)':'Intensity'})
     new_df = prcp_df[(prcp_df['year']== (int(yr))) & (prcp_df['month']== (int(mon))) ]
     return new_df.to_json(orient='records')
 
@@ -93,7 +96,9 @@ def prcpdate(mon, yr):
 ## FILTERED SNOWFALL
 @app.route('/api/filtersnow/<mon>/<yr>', methods=['GET','POST'])
 def snowdate(mon, yr):
+    # snow_df = snow_df.rename(columns ={'Snow(in)':'Intensity'})
     new_df = snow_df[(snow_df['year']== (int(yr))) & (snow_df['month']== (int(mon))) ]
+    # new_df['Intensity'] = new_df['Snow(in)']
     return new_df.to_json(orient='records')
 
 
