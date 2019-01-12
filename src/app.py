@@ -19,16 +19,6 @@ def home():
     return render_template('index.html')
 
 
-@app.route('/map_test', methods=['GET'])
-def test():
-    return render_template('test.html')
-
-
-@app.route('/api/test', methods=['GET','POST'])
-def api_test():
-    return dumps(db.maxt.find().limit(10000))
-
-
 ## MAXTEMP
 @app.route('/api/maxt', methods=['GET','POST'])
 def maxt():
