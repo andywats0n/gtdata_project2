@@ -1,112 +1,103 @@
-const center = [39.8283, -98.5795];
-let mapUrl = `https://api.tiles.mapbox.com/v4/{id}/{z}/{x}/{y}.png?access_token=${API_KEY}`;
-let month = 8;
-let year = 2017;
+let layer;
+let center = [39.8283, -98.5795]
+let map = L.map('mapid').setView(center, 5.15);
+let mapUrl = `https://api.tiles.mapbox.com/v4/{id}/{z}/{x}/{y}.png?access_token=${API_KEY}`
+L.tileLayer(mapUrl, { id: 'mapbox.streets' }).addTo(map);
 
-var precipArray = [];
-var snowArray = [];
-var mintempArray = [];
-var maxtempArray = [];
+init();
 
-let precipLayer = L.layerGroup(precipArray);
-let snowLayer = L.layerGroup(snowArray);
-let mintempLayer = L.layerGroup(mintempArray);
-let maxtempLayer = L.layerGroup(maxtempArray);
+let filters = ['maxt','mint','prcp','snow']
+let body = document.querySelector('body');
+let fSelect = document.createElement('select');
+let ySelect = document.createElement('select');
+let mSelect = document.createElement('select');
+let submit = document.createElement('button');
+let clear = document.createElement('button');
 
-let overlayMaps = {
-  Precipitation: precipLayer,
-  Snow: snowLayer,
-  MinTemperatures: mintempLayer,
-  MaxTemperatures: maxtempLayer
-};
+submit.innerHTML = 'Submit'
+clear.innerHTML = 'Clear'
 
-let primeTile = L.tileLayer(mapUrl, { id: 'mapbox.streets' });
+body.appendChild(fSelect);
+body.appendChild(mSelect);
+body.appendChild(ySelect);
+body.appendChild(submit);
+body.appendChild(clear);
 
-let baseMaps = {
-  "Base Map": primeTile
-};
+let minYear = 1950;
+let maxYear = 2019;
+let years = [];
 
-let map = L.map('mapid', {
-  center:center,
-  zoom: 5.15,
-  layers: [primeTile, snowLayer]
+for(let i = 12; i >= 1; i--) {
+  let option = document.createElement('option');
+  option.setAttribute('text', i);
+  option.innerHTML = i;
+  mSelect.appendChild(option);
+}
+
+for(let i = maxYear; i >= minYear; i--) {
+  let option = document.createElement('option');
+  option.setAttribute('text', i);
+  option.innerHTML = i;
+  ySelect.appendChild(option);
+}
+
+filters.forEach(f => {
+  let option = document.createElement('option');
+  option.setAttribute('text',f);
+  option.innerHTML = f;
+  fSelect.appendChild(option);
 });
 
-// precipitation
-let precipUrl = `http://localhost:5000/api/filterprcp/${month}/${year}`
-d3.json(precipUrl, function(response) {
+let fSelected = 'maxt';
+let mSelected = '1';
+let ySelected = '2019';
 
-  for (var i = 0; i < response.length; i++) {
-    var record = response[i];
-    precipArray.push([record.Lat, record.Long, record['Prcp(in)']]);
-  }
-    var heat = L.heatLayer(precipArray, {
-        radius: 30,
-        blur: 15,
-        gradient: {0.3: 'blue', .5: 'lime', 1: 'red'}
-      }).addTo(map);
-    });
+fSelect.addEventListener('click', e => {
+  fSelected = e.target.value;
+});
+mSelect.addEventListener('click', e => {
+  mSelected = e.target.value;
+});
+ySelect.addEventListener('click', e => {
+  ySelected = e.target.value;
+});
+submit.addEventListener('click', e => {
+  getData(fSelected,mSelected,ySelected);
+});
+clear.addEventListener('click', e => {
+  map.removeLayer(layer)
+});
 
-// snow
-let snowUrl = `http://localhost:5000/api/filtersnow/${month}/${year}`
-d3.json(snowUrl, function(response) {
+function getData(f,m,y) {
+  let url = `http://localhost:5000/api/filter${fSelected}/${parseInt(mSelected)}/${parseInt(ySelected)}`
+  d3.json(url, function(response) {
+    let data = [];
 
-  for (var i = 0; i < response.length; i++) {
-    var record = response[i];
-    snowArray.push([record.Lat, record.Long, record['Snow(in)']]);
-  }
-    var heat = L.heatLayer(snowArray, {
-        radius: 30,
-        blur: 15,
-        gradient: {0.3: 'blue', .7: 'lime', 1: 'red'}
-      }).addTo(map);
-    });
+    for (var i = 0; i < response.length; i++) {
+      var record = response[i];
+      data.push([record.Lat, record.Long, 20]);
+    }
 
-// mintemp
-let mintempUrl = `http://localhost:5000/api/filtermint/${month}/${year}`
-d3.json(mintempUrl, function(response) {
-
-  for (var i = 0; i < response.length; i++) {
-    var record = response[i];
-    mintempArray.push([record.Lat, record.Long, record['Temp(F)']]);
-  }
-    var heat = L.heatLayer(mintempArray, {
-        radius: 20,
-        blur: 20,
-        gradient: {0.4: 'blue', .8: 'lime', 1: 'red'}
-      }).addTo(map);
-    });
-
-// maxtemp
-let maxtempUrl = `http://localhost:5000/api/filtermaxt/${month}/${year}`
-d3.json(maxtempUrl, function(response) {
-
-  for (var i = 0; i < response.length; i++) {
-    var record = response[i];
-    maxtempArray.push([record.Lat, record.Long, record['Temp(F)']]);
-  }
-    var heat = L.heatLayer(maxtempArray, {
-        radius: 50,
-        blur: 15
-      }).addTo(map);
-    });
-
-L.control.layers(baseMaps, overlayMaps, {collapsed: false}).addTo(map);
+    layer = L.heatLayer(data, {
+      radius: 30,
+      blur: 15,
+      gradient: {0.3: 'blue', .7: 'lime', 1: 'red'}
+    }).addTo(map);
+  });
+}
 
 
-
-// let myurl = 'http://localhost:5000/api/maxt';
-// d3.json(myurl, function(response) {
-//   var heatArray = [];
-//   for (var i = 0; i < response.length; i++) {
-//     var record = response[i];
-//     heatArray.push([record.Lat, record.Long, record['Temp(F)']]);
-//   }
-
-// var heat = L.heatLayer(heatArray, {
-//     radius: 50,
-//     blur: 15
-// }).addTo(mymap);
-// });
-
-// mymap.addEventListener('click', e => {console.log(e.latlng.lat, e.latlng.lng)});
+function init() {
+  fetch('http://localhost:5000/api/maxt')
+    .then(res => res.json())
+    .then(data => console.log(data));
+  fetch('http://localhost:5000/api/mint')
+    .then(res => res.json())
+    .then(data => console.log(data));
+  fetch('http://localhost:5000/api/prcp')
+    .then(res => res.json())
+    .then(data => console.log(data));
+  fetch('http://localhost:5000/api/snow')
+    .then(res => res.json())
+    .then(data => console.log(data));
+}
