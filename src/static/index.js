@@ -4,8 +4,6 @@ let map = L.map('mapid').setView(center, 5.15);
 let mapUrl = `https://api.tiles.mapbox.com/v4/{id}/{z}/{x}/{y}.png?access_token=${API_KEY}`
 L.tileLayer(mapUrl, { id: 'mapbox.streets' }).addTo(map);
 
-init();
-
 let filters = ['maxt','mint','prcp','snow']
 let body = document.querySelector('body');
 let fSelect = document.createElement('select');
@@ -26,6 +24,7 @@ body.appendChild(fSelect);
 clear.classList.add('btn','btn-danger');
 submit.classList.add('btn','btn-primary');
 
+init(filters);
 let minYear = 1950;
 let maxYear = 2019;
 let years = [];
@@ -55,21 +54,11 @@ let fSelected = 'maxt';
 let mSelected = '1';
 let ySelected = '2019';
 
-fSelect.addEventListener('click', e => {
-  fSelected = e.target.value;
-});
-mSelect.addEventListener('click', e => {
-  mSelected = e.target.value;
-});
-ySelect.addEventListener('click', e => {
-  ySelected = e.target.value;
-});
-submit.addEventListener('click', e => {
-  getData(fSelected,mSelected,ySelected);
-});
-clear.addEventListener('click', e => {
-  map.removeLayer(layer)
-});
+fSelect.addEventListener('click', e => fSelected = e.target.value);
+mSelect.addEventListener('click', e => mSelected = e.target.value);
+ySelect.addEventListener('click', e => ySelected = e.target.value);
+submit.addEventListener('click', e => getData(fSelected,mSelected,ySelected));
+clear.addEventListener('click', e => map.removeLayer(layer));
 
 function getData(f,m,y) {
   let url = `http://localhost:5000/api/filter${f}/${parseInt(m)}/${parseInt(y)}`
@@ -89,17 +78,10 @@ function getData(f,m,y) {
   });
 }
 
-function init() {
-  fetch('http://localhost:5000/api/maxt')
-    .then(res => res.json())
-    .then(data => console.log(data));
-  fetch('http://localhost:5000/api/mint')
-    .then(res => res.json())
-    .then(data => console.log(data));
-  fetch('http://localhost:5000/api/prcp')
-    .then(res => res.json())
-    .then(data => console.log(data));
-  fetch('http://localhost:5000/api/snow')
-    .then(res => res.json())
-    .then(data => console.log(data));
+function init(filters) {
+  filters.forEach(f => {
+    fetch(`http://localhost:5000/api/${f}`)
+      .then(res => res.json())
+      .then(data => console.log(data));
+  });
 }
