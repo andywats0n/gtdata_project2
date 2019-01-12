@@ -1,19 +1,64 @@
-
-const center = [39.8283, -98.5795]
-
+const center = [39.8283, -98.5795];
 let mymap = L.map('mapid').setView(center, 5.15);
+let mapUrl = `https://api.tiles.mapbox.com/v4/{id}/{z}/{x}/{y}.png?access_token=${API_KEY}`;
 
-let mapUrl = `https://api.tiles.mapbox.com/v4/{id}/{z}/{x}/{y}.png?access_token=${API_KEY}`
-let precipUrl = 'http://localhost:5000/?'
-let snowUrl = 'http://localhost:5000/?'
-let mintempUrl = 'http://localhost:5000/?'
-let maxtempUrl = 'http://localhost:5000/?'
+primeTile = L.tileLayer(mapUrl, { id: 'mapbox.streets' });
 
-primeTile = L.tileLayer(mapUrl, { id: 'mapbox.streets' })
+let precipUrl = `http://localhost:5000/api/filterprcp/${month}/${year}`
+d3.json(precipUrl, function(response) {
 
-// primeTile.addTo(mymap);
+  console.log('reading');
 
-mymap.addEventListener('click', e => {console.log(e.latlng.lat, e.latlng.lng)});
+  var precipData = [];
+
+  for (var i = 0; i < response.length; i++) {
+    var record = response[i];
+
+        precipData.push([record.Lat, record.Long, record['Temp(F)']]);
+
+    }});
+
+let snowUrl = `http://localhost:5000/api/filtersnow/${month}/${year}`
+d3.json(snowUrl, function(response) {
+
+  console.log('reading');
+
+  var snowData = [];
+
+  for (var i = 0; i < response.length; i++) {
+    var record = response[i];
+
+        snowData.push([record.Lat, record.Long, record['Temp(F)']]);
+
+    }});
+
+let mintempUrl = `http://localhost:5000/api/filtermintemp/${month}/${year}`
+d3.json(mintempUrl, function(response) {
+
+  console.log('reading');
+
+  var mintempData = [];
+
+  for (var i = 0; i < response.length; i++) {
+    var record = response[i];
+
+        mintempData.push([record.Lat, record.Long, record['Temp(F)']]);
+
+    }});
+
+let maxtempUrl = `http://localhost:5000/api/filtermaxtemp/${month}/${year}`
+d3.json(maxtempUrl, function(response) {
+
+  console.log('reading');
+
+  var maxtempData = [];
+
+  for (var i = 0; i < response.length; i++) {
+    var record = response[i];
+
+        maxtempData.push([record.Lat, record.Long, record['Temp(F)']]);
+
+    }});
 
 let precipLayer = L.layerGroup(precipData);
 let snowLayer = L.layerGroup(snowData);
@@ -28,77 +73,44 @@ let overlayMaps = {
 };
 
 L.control.layers(primeTile, overlayMaps).addTo(myMap);
-// fetch(url)
-//   .then(res => res.json())
-//   .then(data => console.log(data[0]));
-//
-// d3.json(url, function(data) {
-//
-//   console.log(data);
-//   console.log(data[0].Long);
-//   console.log(data[0].Long[0]);
-//
-//   var coordinates = [];
-//   var temps = [];
-//   var dates = [];
-//   var prefix = data[0]
-//
-//   prefix.Long.forEach(
-//   i => {
-//     coordinates.push([i.Lat, i.Long]);
-//   }
-// )
-  // for (var i = 0; i < data[0].Long.length; i++) {
-  //   coordinates.push([data[0].Lat[i], data[0].Long[i]]);
-  //   temps.push(data[0].Temp(F)[i]);
-  //   dates.push(data[0].Long[i]);
-  // }
-  // console.log(coordinates);
-//
+
 //   var heat = L.heatLayer(coordinates, {
 //     radius: 20,
 //     blur: 35
 //   }).addTo(mymap);
 // });
 
-
-// This code below is to get the data for each property and put it into a list so that we can create the map overlays
-// d3.json(url, function(data){
-//   console.log(data[0]);
-  // var precip_data = [];
-  // var coordinates = [];
-  //
-  // for (var i = 0; i < data.length; i++) {
-  //   precip_data.push(data[i].);
-  //   temps.push(data[0].Temp(F)[i]);
-  //   dates.push(data[0].Long[i]);
-  // }
-// })
-
-
-// lats = [];
-// longs = [];
-// temps = [];
-// dates = [];
-
-// fetch(url)
-//   .then(res => res.json())
-//   .then(data =>
-//               for (var i = 0; i < data[0].Lat.length; i++) {
-//                 lats.push(data[0].Lat[i]);
-//                 longs.push(data[0].Long[i]);
-//                 temps.push(data[0].Lat[i]);
-//                 dates.push(data[0].Long[i]);
-// }
-// );
-// console.log(lats);
-
-
-
-//
 // var marker = L.marker([45.52, -122.67], {
 //   draggable: true,
 //   title: "My First Marker"
 // }).addTo(mymap);
 //
 // marker.bindPopup("Hello There!");
+
+// fetch(url)
+//   .then(res => res.json())
+//   .then(data => console.log(data))
+
+let myurl = 'http://localhost:5000/api/maxt';
+d3.json(myurl, function(response) {
+
+  console.log('reading');
+
+  var heatArray = [];
+
+  for (var i = 0; i < response.length; i++) {
+    var record = response[i];
+
+        heatArray.push([record.Lat, record.Long, record['Temp(F)']]);
+
+    }
+ // console.log(heatArray)
+  var heat = L.heatLayer(heatArray, {
+      radius: 50,
+      blur: 15
+  }).addTo(mymap);
+  console.log('done');
+});
+
+
+mymap.addEventListener('click', e => {console.log(e.latlng.lat, e.latlng.lng)});
