@@ -9,6 +9,11 @@ client = pymongo.MongoClient(conn)
 db = client.weatherviz
 app = Flask(__name__)
 
+maxt_df = None
+mint_df = None
+prcp_df = None
+snow_df = None
+
 @app.route('/', methods=['GET'])
 def home():
     return render_template('index.html')
@@ -22,11 +27,6 @@ def test():
 @app.route('/api/test', methods=['GET','POST'])
 def api_test():
     return dumps(db.maxt.find().limit(10000))
-
-maxt_df = None
-mint_df = None
-prcp_df = None
-snow_df = None
 
 
 ## MAXTEMP
@@ -77,6 +77,7 @@ def snow():
         snow_df = pd.DataFrame(my_snow.groupby(['year', 'month', 'Lat', 'Long'])['Snow(in)'].max()).reset_index()
         snow_df = snow_df[snow_df['Snow(in)'] !=0]
     return snow_df.to_json(orient='records')
+
 
 ## FILTERED MAXTEMP
 @app.route('/api/filtermaxt/<mon>/<yr>', methods=['GET','POST'])
