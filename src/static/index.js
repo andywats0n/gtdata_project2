@@ -1,66 +1,17 @@
 const center = [39.8283, -98.5795];
 let mapUrl = `https://api.tiles.mapbox.com/v4/{id}/{z}/{x}/{y}.png?access_token=${API_KEY}`;
-let month = 1;
-let year = 2010;
+let month = 8;
+let year = 2017;
 
-var precipData = [];
-var snowData = [];
-var mintempData = [];
-var maxtempData = [];
+var precipArray = [];
+var snowArray = [];
+var mintempArray = [];
+var maxtempArray = [];
 
-// precipitation
-let precipUrl = `http://localhost:5000/api/filterprcp/${month}/${year}`
-d3.json(precipUrl, function(response) {  
-  for (var i = 0; i < response.length; i++) {
-    var record = response[i];
-    precipData.push(L.heatLayer([record.Lat, record.Long, record['Prcp(in)']], {
-      radius: 50,
-      blur: 15
-    }));
-  }
-});
-
-// snowfall
-let snowUrl = `http://localhost:5000/api/filtersnow/${month}/${year}`
-d3.json(snowUrl, function(response) {  
-  for (var i = 0; i < response.length; i++) {
-    var record = response[i];
-    snowData.push(L.heatLayer([record.Lat, record.Long, record['Snow(in)']], {
-      radius: 50,
-      blur: 15
-    }));
-  }
-});
-
-// low temps
-let mintempUrl = `http://localhost:5000/api/filtermint/${month}/${year}`
-d3.json(mintempUrl, function(response) {  
-  for (var i = 0; i < response.length; i++) {
-    var record = response[i];
-    mintempData.push(L.heatLayer([record.Lat, record.Long, record['Temp(F)']], {
-      radius: 50,
-      blur: 15
-    }));
-  }
-});
-
-// high temps
-let maxtempUrl = `http://localhost:5000/api/filtermaxt/${month}/${year}`
-d3.json(maxtempUrl, function(response) {
-  for (var i = 0; i < response.length; i++) {
-    var record = response[i];
-    maxtempData.push(L.heatLayer([record.Lat, record.Long, record['Temp(F)']], {
-      radius: 50,
-      blur: 15
-    }));
-  }
-});
-
-
-let precipLayer = L.layerGroup(precipData);
-let snowLayer = L.layerGroup(snowData);
-let mintempLayer = L.layerGroup(mintempData);
-let maxtempLayer = L.layerGroup(maxtempData);
+let precipLayer = L.layerGroup(precipArray);
+let snowLayer = L.layerGroup(snowArray);
+let mintempLayer = L.layerGroup(mintempArray);
+let maxtempLayer = L.layerGroup(maxtempArray);
 
 let overlayMaps = {
   Precipitation: precipLayer,
@@ -73,13 +24,69 @@ let primeTile = L.tileLayer(mapUrl, { id: 'mapbox.streets' });
 
 let baseMaps = {
   "Base Map": primeTile
-}
+};
 
 let map = L.map('mapid', {
   center:center,
   zoom: 5.15,
   layers: [primeTile, snowLayer]
-})
+});
+
+// precipitation
+let precipUrl = `http://localhost:5000/api/filterprcp/${month}/${year}`
+d3.json(precipUrl, function(response) {
+
+  for (var i = 0; i < response.length; i++) {
+    var record = response[i];
+    precipArray.push([record.Lat, record.Long, record['Prcp(in)']]);
+  }
+    var heat = L.heatLayer(precipArray, {
+        radius: 50,
+        blur: 15
+      }).addTo(map);
+    });
+
+// snow
+let snowUrl = `http://localhost:5000/api/filtersnow/${month}/${year}`
+d3.json(snowUrl, function(response) {
+
+  for (var i = 0; i < response.length; i++) {
+    var record = response[i];
+    snowArray.push([record.Lat, record.Long, record['Snow(in)']]);
+  }
+    var heat = L.heatLayer(snowArray, {
+        radius: 50,
+        blur: 15
+      }).addTo(map);
+    });
+
+// mintemp
+let mintempUrl = `http://localhost:5000/api/filtermint/${month}/${year}`
+d3.json(mintempUrl, function(response) {
+
+  for (var i = 0; i < response.length; i++) {
+    var record = response[i];
+    mintempArray.push([record.Lat, record.Long, record['Temp(F)']]);
+  }
+    var heat = L.heatLayer(mintempArray, {
+        radius: 50,
+        blur: 15
+      }).addTo(map);
+    });
+
+// maxtemp
+let maxtempUrl = `http://localhost:5000/api/filtermaxt/${month}/${year}`
+d3.json(maxtempUrl, function(response) {
+
+  for (var i = 0; i < response.length; i++) {
+    var record = response[i];
+    maxtempArray.push([record.Lat, record.Long, record['Temp(F)']]);
+  }
+    var heat = L.heatLayer(maxtempArray, {
+        radius: 50,
+        blur: 15
+      }).addTo(map);
+    });
 
 L.control.layers(baseMaps, overlayMaps, {collapsed: false}).addTo(map);
 
