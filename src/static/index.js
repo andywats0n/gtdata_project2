@@ -17,11 +17,14 @@ let clear = document.createElement('button');
 submit.innerHTML = 'Submit'
 clear.innerHTML = 'Clear'
 
-body.appendChild(fSelect);
-body.appendChild(mSelect);
-body.appendChild(ySelect);
-body.appendChild(submit);
 body.appendChild(clear);
+body.appendChild(submit);
+body.appendChild(ySelect);
+body.appendChild(mSelect);
+body.appendChild(fSelect);
+
+clear.classList.add('btn','btn-danger');
+submit.classList.add('btn','btn-primary');
 
 let minYear = 1950;
 let maxYear = 2019;
