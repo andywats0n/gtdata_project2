@@ -69,7 +69,7 @@ clear.addEventListener('click', e => {
 });
 
 function getData(f,m,y) {
-  let url = `http://localhost:5000/api/filter${fSelected}/${parseInt(mSelected)}/${parseInt(ySelected)}`
+  let url = `http://localhost:5000/api/filter${f}/${parseInt(m)}/${parseInt(y)}`
   d3.json(url, function(response) {
     let data = [];
 
@@ -85,7 +85,6 @@ function getData(f,m,y) {
     }).addTo(map);
   });
 }
-
 
 function init() {
   fetch('http://localhost:5000/api/maxt')
