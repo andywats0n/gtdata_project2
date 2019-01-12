@@ -1,6 +1,6 @@
 <!DOCTYPE html>
 <html lang="en">
-<head>
+  <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
@@ -13,12 +13,22 @@
     <script src="https://d3js.org/d3.v4.min.js"></script>
     <link rel="stylesheet" href="../static/styles.css">
     <title>WeatherViz</title>
-</head>
-<body>
+  </head>
+  <body>
+    <form>
+      <input class="dropdown" type="radio" value = "prcp" onchange="getData(this.value)"><label for="Precipitation">Precipitation</label>
+      <input class="dropdown" type="radio" value = "snow" onchange="getData(this.value)"><label for="Snow">Snow</label>
+      <input class="dropdown" type="radio" value = "mint" onchange="getData(this.value)"><label for="Min Temp">Min Temp</label>
+      <input class="dropdown" type="radio" value = "maxt" onchange="getData(this.value)"><label for="Max Temp">Max Temp</label>
+          <!-- <option value="prcp">Snow</option>
+          <option value="snow">Precipitation</option>
+          <option value="mint">Max Temperature</option>
+          <option value="maxt">Min Temperature</option> -->
+      <!-- </input> -->
+    </form>
     <div id="mapid"></div>
-
     <script src="../static/config.js"></script>
     <script src="../static/index.js"></script>
     <script src="../static/leaflet-heat.js"></script>
-    </body>
+  </body>
 </html>
