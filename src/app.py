@@ -28,6 +28,8 @@ mint_df = None
 prcp_df = None
 snow_df = None
 
+
+## MAXTEMP
 @app.route('/api/maxt', methods=['GET','POST'])
 def maxt():
     global maxt_df
@@ -40,7 +42,7 @@ def maxt():
     return maxt_df.to_json(orient='records')
 
 
-
+## MINTEMP
 @app.route('/api/mint', methods=['GET','POST'])
 def mint():
     global mint_df
@@ -52,6 +54,7 @@ def mint():
     return mint_df.to_json(orient='records')
 
 
+## PRECIPITATION
 @app.route('/api/prcp', methods=['GET','POST'])
 def prcp():
     global prcp_df
@@ -63,6 +66,7 @@ def prcp():
     return prcp_df.to_json(orient='records')
 
 
+## SNOWFALL
 @app.route('/api/snow', methods=['GET','POST'])
 def snow():
     global snow_df
@@ -74,28 +78,30 @@ def snow():
         snow_df = snow_df[snow_df['Snow(in)'] !=0]
     return snow_df.to_json(orient='records')
 
-
+## FILTERED MAXTEMP
 @app.route('/api/filtermaxt/<mon>/<yr>', methods=['GET','POST'])
 def maxtdate(mon, yr):
-    
     new_df = maxt_df[(maxt_df['year']== (int(yr))) & (maxt_df['month']== (int(mon))) ]
     return new_df.to_json(orient='records')
 
+
+## FILTERED MINTEMP
 @app.route('/api/filtermint/<mon>/<yr>', methods=['GET','POST'])
 def mintdate(mon, yr):
-    
     new_df = mint_df[(mint_df['year']== (int(yr))) & (mint_df['month']== (int(mon))) ]
     return new_df.to_json(orient='records')
 
+
+## FILTERED PRECIPITATION
 @app.route('/api/filterprcp/<mon>/<yr>', methods=['GET','POST'])
 def prcpdate(mon, yr):
-    
     new_df = prcp_df[(prcp_df['year']== (int(yr))) & (prcp_df['month']== (int(mon))) ]
     return new_df.to_json(orient='records')
 
+
+## FILTERED SNOWFALL
 @app.route('/api/filtersnow/<mon>/<yr>', methods=['GET','POST'])
 def snowdate(mon, yr):
-    
     new_df = snow_df[(snow_df['year']== (int(yr))) & (snow_df['month']== (int(mon))) ]
     return new_df.to_json(orient='records')
 
